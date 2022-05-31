@@ -39,7 +39,7 @@ if (isset($_POST["tambah"])) {
     <div class="container">
         <h1>Tambah data film</h1>
 
-        <a href="admin.php">Kembali Ke Daftar Film</a>
+        <a href="tables.php">Kembali Ke Daftar Film</a>
 
         <div class="row mt-3">
             <div class="col-8">

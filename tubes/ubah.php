@@ -42,8 +42,9 @@ if (isset($_POST["ubah"])) {
         <div class="row mt-3">
             <div class="col-8">
             
-                <form action="" method="post" autocomplete="off">
+                <form action="" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="id" value="<?= $data["id"]; ?>">
+                    <input type="hidden" name="posterLama" value="<?= $data["poster"]; ?>">
                     <div class="mb-3">
                         <label for="judul" class="form-label">Judul</label>
                         <input type="text" class="form-control" id="judul" name="judul" required value="<?= $data["judul"];?>">
@@ -65,8 +66,9 @@ if (isset($_POST["ubah"])) {
                         <input type="text" class="form-control" id="pemeran" name="pemeran"required value="<?= $data["pemeran"];?>">
                     </div>
                     <div class="mb-3">
-                        <label for="poster" class="form-label">Poster</label>
-                        <input type="text" class="form-control" id="poster" name="poster"required value="<?= $data["poster"];?>">
+                        <label for="poster" class="form-label">Poster</label> <br>
+                        <img src="img/<?= $film['poster']; ?>" width="80"> <br>
+                        <input type="file" class="form-control" id="poster" name="poster">
                     </div>
                     <div class="mb-3">
                         <label for="sinopsis" class="form-label">Sinopsis</label>

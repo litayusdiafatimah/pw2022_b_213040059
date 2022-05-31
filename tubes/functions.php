@@ -50,6 +50,29 @@ function upload () {
     }
 
     $ekstensiPosterValid = ['jpg', 'jpeg', 'png'];
+    $ekstensiPoster = explode('.', $namaFile);
+    $ekstensiPoster = strtolower (end($ekstensiPoster));
+    if( !in_array($ekstensiPoster, $ekstensiPosterValid) ) {
+        echo "<script>
+        alert('yang anda upload bukan gambar!');
+        </script>";
+        return false;
+    }
+
+    if( $ukuranFile > 1000000 ) {
+        echo "<script>
+        alert('ukuran gambar terlalu besar!');
+        </script>";
+        return false;
+    }
+
+    $namaFileBaru = uniqid();
+    $namaFileBaru .= '.';
+    $namaFileBaru .= $ekstensiPoster;
+
+    move_uploaded_file($tmpName, 'img/'. $namaFileBaru);
+
+    return $namaFileBaru;
     
 }
 
@@ -69,6 +92,13 @@ function ubah($data) {
     $durasi = htmlspecialchars($data["durasi"]);
     $sutradara = htmlspecialchars($data["sutradara"]);
     $pemeran = htmlspecialchars($data["pemeran"]);
+    $posterLama = htmlspecialchars($data["posterLama"]);
+
+    if( $_FILES['poster']['error'] === 4) {
+        $poster = $posterLama;
+    } else {
+        $poster = upload();
+    }
     $poster = htmlspecialchars($data["poster"]);
     $sinopsis = htmlspecialchars($data["sinopsis"]);
 

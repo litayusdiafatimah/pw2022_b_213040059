@@ -111,18 +111,11 @@ if (isset ($_POST["cari"]) ) {
                   <div class="page_title">
                 
                     <form action="" method="post" class="row g-3">
-
-                      <!-- <input type="text" name="keyword" size="50" class="form-control col-auto" width="100" autofocus placeholder="masukkan keyword pencarian..." autocomplete="off">
-                      <button type="submit" name="cari" class="btn btn-primary">Cari!</button> -->
-
-
-
-                      
                       <div class="col-6">
-                        <input type="text" class="form-control" autofocus placeholder="masukkan keyword pencarian...">
+                        <input type="text"  name="keyword" class="form-control" autofocus placeholder="masukkan keyword pencarian..." autocomplete="off">
                       </div>
                       <div class="col-auto">
-                        <button type="submit" class="btn btn-primary mb-3">Cari</button>
+                        <button type="submit" name ="cari" class="btn btn-primary mb-3">Cari</button>
                       </div>
 
                     </form>
