@@ -1,9 +1,18 @@
 <?php
+session_start();
+
+if( !isset($_SESSION["login"]) ) {
+    header("Location: login.php");
+    exit;
+  }
+
+
 require 'functions.php';
 
 $id = $_GET["id"];
 
 $data = query(" SELECT * FROM film WHERE id= $id")[0];
+
 
 
 if (isset($_POST["ubah"])) {
@@ -37,7 +46,7 @@ if (isset($_POST["ubah"])) {
     <div class="container">
         <h1>Ubah data film</h1>
 
-        <a href="admin.php">Kembali Ke Daftar Film</a>
+        <a href="tables.php">Kembali Ke Daftar Film</a>
 
         <div class="row mt-3">
             <div class="col-8">
@@ -49,10 +58,20 @@ if (isset($_POST["ubah"])) {
                         <label for="judul" class="form-label">Judul</label>
                         <input type="text" class="form-control" id="judul" name="judul" required value="<?= $data["judul"];?>">
                     </div>
-                    <div class="mb-3">
+                    <!-- <div class="mb-3">
                         <label for="genre" class="form-label">Genre</label>
                         <input type="text" class="form-control" id="genre" name="genre" required value="<?= $data["genre"];?>">
-                    </div>
+                    </div> -->
+                    <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <select class="form-select" name="nama_genre" required="" id="genre">
+                                <option disabled="" selected="">Pilih Genre</option>
+                                <option value="1" <?php if($data['genre'] == "1") { echo "selected";} ?>>Roman</option>
+                                <option value="2" <?php if($data['genre'] == "2") { echo "selected";} ?>>Drama</option>
+                                <option value="3" <?php if($data['genre'] == "3") { echo "selected";} ?>>Petualangan</option>
+                                <option value="4" <?php if($data['genre'] == "4") { echo "selected";} ?>>Anak-anak</option>
+                            </select>
+                        </div>
                     <div class="mb-3">
                         <label for="durasi" class="form-label">Durasi</label>
                         <input type="text" class="form-control" id="durasi" name="durasi"required value="<?= $data["durasi"];?>">
@@ -67,12 +86,12 @@ if (isset($_POST["ubah"])) {
                     </div>
                     <div class="mb-3">
                         <label for="poster" class="form-label">Poster</label> <br>
-                        <img src="img/<?= $film['poster']; ?>" width="80"> <br>
+                        <img src="../tubes/img/<?= $data["poster"]; ?>" width="80"> <br>
                         <input type="file" class="form-control" id="poster" name="poster">
                     </div>
                     <div class="mb-3">
                         <label for="sinopsis" class="form-label">Sinopsis</label>
-                        <input type="text" class="form-control" id="sinopsis" name="sinopsis"required value="<?= $data["sinopsis"];?>">
+                        <textarea type="text" class="form-control" id="sinopsis" name="sinopsis"required rows="5"><?php echo htmlspecialchars($data["sinopsis"]); ?></textarea>
                     </div>
                     <button type="submit" name="ubah" class="btn btn-primary">Ubah Data Film</button>
                 </form>

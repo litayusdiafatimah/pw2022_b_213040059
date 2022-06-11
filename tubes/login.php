@@ -1,3 +1,60 @@
+<?php
+session_start();
+require 'functions.php';
+
+// cek cookie 
+if( isset($_COOKIE['id']) && isset($_COOKIE['key']) ) {
+  $id = $_COOKIE['id'];
+  $key = $_COOKIE['key'];
+
+  // ambil username berdasarkan id
+$result = mysqli_query($conn, "SELECT username FROM user WHERE id = $id" );
+$row = mysqli_fetch_assoc($result);
+
+// cek cookie dan username
+if( $key === hash('sha256', $row['username']) ) {
+  $_SESSION['login'] = true;
+}
+
+}
+
+if( isset($_SESSION["login"]) ) {
+    header("Location: tables.php");
+    exit;
+  }
+
+
+
+if( isset($_POST["login"]) ) {
+
+   $username = $_POST["username"];
+   $password = $_POST["password"];
+
+   $result = mysqli_query($conn, "SELECT * FROM user WHERE username = '$username' ");
+
+
+   if( mysqli_num_rows($result) === 1 ) {
+
+        $row = mysqli_fetch_assoc($result);
+        if( password_verify($password, $row["password"]) ) {
+            $_SESSION["login"] = true;
+
+            if( isset($_POST['remember']) ) {
+              // buat cookie
+
+              setcookie('id', $row['id'], time()+60);
+              setcookie('key', hash('sha256', $row['username']), time()+60 );
+            }
+
+            header("Location: tables.php");
+            exit;
+        }
+   }
+
+   $error = true;
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +65,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
     <!-- site metas -->
-    <title>Pluto - Responsive Bootstrap Admin Panel Templates</title>
+    <title>Login</title>
     <meta name="keywords" content="" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -43,15 +100,18 @@
             <div class="logo_login">
               <div class="center">
                 <!-- <img width="210" src="images/logo/logo.png" alt="#" /> -->
-                <h1 class="text-white">LITA</h1>
+                <h1 class="text-white">SELAMAT DATANG!!</h1>
+                <?php if(isset($error) )  : ?>
+                   <p style="color: red; font-style:italic;">username / password salah</p>
+                 <?php endif; ?>
               </div>
             </div>
             <div class="login_form">
-              <form>
+              <form autocomplete="off" method="post" action="">
                 <fieldset>
                   <div class="field">
-                    <label class="label_field">Email Address</label>
-                    <input type="email" name="email" placeholder="E-mail" />
+                    <label class="label_field">Username</label>
+                    <input type="text" name="username" placeholder="Username"/>
                   </div>
                   <div class="field">
                     <label class="label_field">Password</label>
@@ -60,11 +120,10 @@
                   <div class="field">
                     <label class="label_field hidden">hidden label</label>
                     <label class="form-check-label"><input type="checkbox" class="form-check-input" /> Remember Me</label>
-                    <a class="forgot" href="">Forgotten Password?</a>
                   </div>
                   <div class="field margin_0">
                     <label class="label_field hidden">hidden label</label>
-                    <button class="main_bt">Sing In</button>
+                    <button  type="submit" name="login" class="main_bt">Log In</button>
                   </div>
                 </fieldset>
               </form>

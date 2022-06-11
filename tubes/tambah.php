@@ -1,5 +1,14 @@
 <?php
+session_start();
+
+if( !isset($_SESSION["login"]) ) {
+    header("Location: login.php");
+    exit;
+  }
+
+
 require 'functions.php';
+
 // cek apakah tombol tambah sudah diklik
 if (isset($_POST["tambah"])) {
 
@@ -50,9 +59,19 @@ if (isset($_POST["tambah"])) {
                         <input type="text" class="form-control" id="judul" name="judul" required>
                     </div>
                     <div class="mb-3">
+                            <label for="genre" class="form-label">Genre</label>
+                            <select class="form-select" name="genre" required="" id="genre">
+                                <option disabled="" selected="">Pilih Genre</option>
+                                <option value="1">Roman</option>
+                                <option value="2">Drama</option>
+                                <option value="3">Petualangan</option>
+                                <option value="4">Anak-anak</option>
+                            </select>
+                        </div>
+                    <!-- <div class="mb-3">
                         <label for="genre" class="form-label">Genre</label>
                         <input type="text" class="form-control" id="genre" name="genre" required>
-                    </div>
+                    </div> -->
                     <div class="mb-3">
                         <label for="durasi" class="form-label">Durasi</label>
                         <input type="text" class="form-control" id="durasi" name="durasi">

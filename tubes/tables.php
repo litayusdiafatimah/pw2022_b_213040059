@@ -1,6 +1,13 @@
 <?php 
+session_start();
+
+if( !isset($_SESSION["login"]) ) {
+  header("Location: login.php");
+  exit;
+}
+
 require 'functions.php';
-$film = query("SELECT * FROM film");
+$film = query("SELECT * FROM film join genre on genre.id_genre = film.genre");
 
 if (isset ($_POST["cari"]) ) {
     $film = cari($_POST["keyword"]);
@@ -52,17 +59,13 @@ if (isset ($_POST["cari"]) ) {
         <!-- Sidebar  -->
         <nav id="sidebar">
           <div class="sidebar_blog_1">
-            <div class="sidebar-header">
-              <div class="logo_section">
-                <a href="index.html"><img class="logo_icon img-responsive" src="images/logo/logo_icon.png" alt="#" /></a>
-              </div>
-            </div>
+            
             <div class="sidebar_user_info">
               <div class="icon_setting"></div>
               <div class="user_profle_side">
-                <div class="user_img"><img class="img-responsive" src="images/layout_img/user_img.jpg" alt="#" /></div>
+                <div class="user_img"><img class="img-responsive" src="img/self.jpg" alt="#" /></div>
                 <div class="user_info">
-                  <h6>Admin</h6>
+                  <h6>Lita Yusdia Fatimah</h6>
                 </div>
               </div>
             </div>
@@ -73,6 +76,8 @@ if (isset ($_POST["cari"]) ) {
               <li>
                 <a href="tables.php"><i class="fa fa-table purple_color2"></i> <span>Tabel</span></a>
               </li>
+              <a href="../tubes/report.php" class="mb-1 ml-3 btn btn-outline-success btn-sm btn-info mt-4 col-4">Cetak PDF</a>
+              
             </ul>
           </div>
         </nav>
@@ -85,15 +90,15 @@ if (isset ($_POST["cari"]) ) {
               <div class="full">
                 <button type="button" id="sidebarCollapse" class="sidebar_toggle"><i class="fa fa-bars"></i></button>
                 <div class="logo_section">
-                  <a href="index.html"><img class="img-responsive" src="images/logo/logo.png" alt="#" /></a>
+                  <a href="index.html"><img class="img-responsive" src="img/FLIX.png" alt="#" /><strong></strong></a>
                 </div>
                 <div class="right_topbar">
                   <div class="icon_info">
                     <ul class="user_profile_dd">
                       <li>
-                        <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" src="images/layout_img/user_img.jpg" alt="#" /><span class="name_user">Admin</span></a>
+                        <a class="dropdown-toggle" data-toggle="dropdown"><img class="img-responsive rounded-circle" src="img/self.jpg" alt="#" /><span class="name_user">Lita Yusdia Fatimah</span></a>
                         <div class="dropdown-menu">
-                          <a class="dropdown-item" href="#"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
+                          <a class="dropdown-item" href="logout.php"><span>Log Out</span> <i class="fa fa-sign-out"></i></a>
                         </div>
                       </li>
                     </ul>
@@ -112,10 +117,10 @@ if (isset ($_POST["cari"]) ) {
                 
                     <form action="" method="post" class="row g-3">
                       <div class="col-6">
-                        <input type="text"  name="keyword" class="form-control" autofocus placeholder="masukkan keyword pencarian..." autocomplete="off">
+                        <input type="text"  name="keyword" class="form-control" autofocus placeholder="masukkan keyword pencarian..." autocomplete="off" id="keyword">
                       </div>
                       <div class="col-auto">
-                        <button type="submit" name ="cari" class="btn btn-primary mb-3">Cari</button>
+                        <button type="submit" name ="cari" class="btn btn-primary mb-3" id="tombol-cari">Cari</button>
                       </div>
 
                     </form>
@@ -141,6 +146,7 @@ if (isset ($_POST["cari"]) ) {
                     </div>
                     <div class="table_section padding_infor_info">
                       <div class="table-responsive-sm">
+                      <div id="container">
                         <table class="table">
                           <thead>
                           <tr>
@@ -162,7 +168,7 @@ if (isset ($_POST["cari"]) ) {
                   <td><?= $i; ?></td>
                   <td><img src="img/<?php echo $row["poster"]; ?>" class="img-thumbnail" width="300"></td>
                   <td><?= $row["judul"]; ?></td>
-                  <td><?= $row["genre"]; ?></td>
+                  <td><?= $row["nama_genre"]; ?></td>
                   <td><?= $row["durasi"]; ?></td>
                   <td><?= $row["sutradara"]; ?></td>
                   <td><?= $row["pemeran"]; ?></td>
@@ -176,6 +182,7 @@ if (isset ($_POST["cari"]) ) {
                     <?php endforeach; ?>
                           </tbody>
                         </table>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -240,5 +247,6 @@ if (isset ($_POST["cari"]) ) {
     <script src="js/custom.js"></script>
     <!-- calendar file css -->
     <script src="js/semantic.min.js"></script>
+    <script src="js/script.js"></script>
   </body>
 </html>
